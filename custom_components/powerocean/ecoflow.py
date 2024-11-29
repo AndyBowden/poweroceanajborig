@@ -187,6 +187,9 @@ class Ecoflow:
         return description
 
     def _get_sensors(self, response):
+        # get master and slave serial numbers from from response['data']
+        serials = self.__get_serial_numbers(response)
+        
         # get sensors from response['data']
         sensors = self.__get_sensors_data(response)
 
@@ -246,6 +249,102 @@ class Ecoflow:
                         description=self.__get_description(key),
                         icon=special_icon,
                     )
+
+        return sensors
+        
+    def __get_serial_numbers(response):
+        report = "JTS1_EMS_CHANGE_REPORT"
+        d = response["data"]["quota"][report]
+
+        sens_select = [
+            "bpTotalChgEnergy",
+            "bpTotalDsgEnergy",
+            "bpSoc",
+            "bpOnlineSum",  # number of batteries
+            "emsCtrlLedBright",
+        ]
+
+        # add mppt Warning/Fault Codes
+        keys = d.keys()
+
+
+        
+        _LOGGER.debug(f"serial_d_keys___{keys}")
+        p = response["data"]["parallel"]
+        keys_2 = p.keys()
+        _LOGGER.debug(f"serial_p_keys2__{keys_2}")
+        
+
+
+        
+        r = re.compile("mppt.*Code")
+        wfc = list(filter(r.match, keys))  # warning/fault code keys
+        sens_select += wfc
+
+        for key in p.keys():
+            pp = response["data"]["parallel"][key]
+            keys_3 = pp.keys()
+            _LOGGER.debug(f"serial_pp_keys___{keys_3}")
+        
+        
+
+        return keys_3
+
+
+
+    
+       def __get_sensors_ems_change(self, response, sensors):
+        report = "JTS1_EMS_CHANGE_REPORT"
+        d = response["data"]["quota"][report]
+
+        sens_select = [
+            "bpTotalChgEnergy",
+            "bpTotalDsgEnergy",
+            "bpSoc",
+            "bpOnlineSum",  # number of batteries
+            "emsCtrlLedBright",
+        ]
+
+        # add mppt Warning/Fault Codes
+        keys = d.keys()
+
+
+        
+        _LOGGER.debug(f"d_keys___{keys}")
+        p = response["data"]["parallel"]
+        keys_2 = p.keys()
+        _LOGGER.debug(f"p_keys2__{keys_2}")
+        
+
+
+        
+        r = re.compile("mppt.*Code")
+        wfc = list(filter(r.match, keys))  # warning/fault code keys
+        sens_select += wfc
+
+        for key in p.keys():
+            pp = response["data"]["parallel"][key]
+            keys_3 = pp.keys()
+            _LOGGER.debug(f"pp_keys___{keys_3}")
+        
+        
+        data = {}
+        for key, value in d.items():
+            if key in sens_select:  # use only sensors in sens_select
+                # default uid, unit and descript
+                unique_id = f"{self.sn}_{report}_{key}"
+
+                data[unique_id] = PowerOceanEndPoint(
+                    internal_unique_id=unique_id,
+                    serial=self.sn,
+                    name=f"{self.sn}_{key}",
+                    friendly_name=key,
+                    value=value,
+                    unit=self.__get_unit(key),
+                    description=self.__get_description(key),
+                    icon=None,
+                )
+        dict.update(sensors, data)
 
         return sensors
 
