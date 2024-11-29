@@ -191,7 +191,7 @@ class Ecoflow:
         serials = self.__get_serial_numbers(response)
         
         # get sensors from response['data']
-        sensors = self.__get_sensors_data(response)
+        sensors = self._get_sensors_data(response)
 
         # get sensors from 'JTS1_ENERGY_STREAM_REPORT'
         # sensors = self.__get_sensors_energy_stream(response, sensors)  # is currently not in use
@@ -252,7 +252,7 @@ class Ecoflow:
 
         return sensors
         
-    def __get_serial_numbers(response):
+    def _get_serial_numbers(self, response):
         report = "JTS1_EMS_CHANGE_REPORT"
         d = response["data"]["quota"][report]
 
