@@ -293,7 +293,7 @@ class Ecoflow:
 
 
     
-       def __get_sensors_ems_change(self, response, sensors):
+    def __get_sensors_ems_change(self, response, sensors):
         report = "JTS1_EMS_CHANGE_REPORT"
         d = response["data"]["quota"][report]
 
