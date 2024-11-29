@@ -188,7 +188,7 @@ class Ecoflow:
 
     def _get_sensors(self, response):
         # get master and slave serial numbers from from response['data']
-        serials = self.__get_serial_numbers(response)
+        serials = self._get_serial_numbers(response)
         
         # get sensors from response['data']
         sensors = self._get_sensors_data(response)
