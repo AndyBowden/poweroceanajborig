@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration."""
+"""ecoflow.py: API for PowerOcean integration   AJB1."""
 
 import requests
 import base64
@@ -119,7 +119,7 @@ class Ecoflow:
             request = requests.get(self.url_user_fetch, headers=headers, timeout=30)
             response = self.get_json_response(request)
 
-            _LOGGER.debug(f"{response}")
+            _LOGGER.debug(f"response_string___{response}")
 
             return self._get_sensors(response)
 
