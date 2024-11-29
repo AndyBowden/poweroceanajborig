@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB2."""
+"""ecoflow.py: API for PowerOcean integration   AJB3."""
 
 import requests
 import base64
@@ -294,8 +294,9 @@ class Ecoflow:
         # add mppt Warning/Fault Codes
         keys = d.keys()
         _LOGGER.debug(f"d_keys___{keys}")
-        keys_2 = d.keys()
-        _LOGGER.debug(f"d_keys2__{keys_2}")
+        p = response["data"]["quota"]
+        keys_2 = p.keys()
+        _LOGGER.debug(f"p_keys2__{keys_2}")
         r = re.compile("mppt.*Code")
         wfc = list(filter(r.match, keys))  # warning/fault code keys
         sens_select += wfc
