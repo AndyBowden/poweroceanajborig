@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB4."""
+"""ecoflow.py: API for PowerOcean integration   AJB5."""
 
 import requests
 import base64
@@ -300,6 +300,7 @@ class Ecoflow:
         p = response["data"]["parallel"]
         keys_2 = p.keys()
         _LOGGER.debug(f"p_keys2__{keys_2}")
+        
 
 
         
@@ -307,6 +308,12 @@ class Ecoflow:
         wfc = list(filter(r.match, keys))  # warning/fault code keys
         sens_select += wfc
 
+        for key in p.keys():
+            pp = response["data"]["parallel"][key]
+            keys_3 = pp.keys()
+            _LOGGER.debug(f"pp_keys___{keys_3}")
+        
+        
         data = {}
         for key, value in d.items():
             if key in sens_select:  # use only sensors in sens_select
