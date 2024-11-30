@@ -390,37 +390,23 @@ class Ecoflow:
 
         # add mppt Warning/Fault Codes
         keys = d.keys()
-
-
-        
-        _LOGGER.debug(f"d_keys___{keys}")
-        p = response["data"]["parallel"]
-        keys_2 = p.keys()
-        _LOGGER.debug(f"p_keys2__{keys_2}")
-        
-
-
         
         r = re.compile("mppt.*Code")
         wfc = list(filter(r.match, keys))  # warning/fault code keys
         sens_select += wfc
 
-        for key in p.keys():
-            pp = response["data"]["parallel"][key]
-            keys_3 = pp.keys()
-            _LOGGER.debug(f"pp_keys___{keys_3}")
-        
+       
         
         data = {}
         for key, value in d.items():
             if key in sens_select:  # use only sensors in sens_select
                 # default uid, unit and descript
-                unique_id = f"{self.sn}_{report}_{key}"
+                unique_id = f"{inverter_sn}_{report}_{key}{inverter_string}"
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{key}",
+                    name=f"{inverter_sn}_{key}{inverter_string}",
                     friendly_name = key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
@@ -515,7 +501,7 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{key}",
+                    name=f"{inverter_sn}_{key}{inverter_string}",
                     friendly_name=key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
@@ -527,12 +513,12 @@ class Ecoflow:
         phases = ["pcsAPhase", "pcsBPhase", "pcsCPhase"]
         for i, phase in enumerate(phases):
             for key, value in d[phase].items():
-                name = phase + "_" + key
+                name = phase + "_" + key + inverter_string
                 unique_id = f"{self.sn}_{report}_{name}"
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
-                    serial=self.sn,
+                    serial=inverter_sn,
                     name=f"{inverter_sn}_{name}",
                     friendly_name=f"{name}{inverter_string}",
                     value=value,
@@ -558,7 +544,7 @@ class Ecoflow:
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
-                    serial=self.sn,
+                    serial=inverter_sn,
                     name=f"{inverter_sn}_{mpptpv}_{key}",
                     friendly_name=f"{mpptpv}_{key}{inverter_string}",
                     value=value,
@@ -576,9 +562,9 @@ class Ecoflow:
 
         data[unique_id] = PowerOceanEndPoint(
             internal_unique_id=unique_id,
-            serial=self.sn,
-            name=f"{self.sn}_{name}",
-            friendly_name=f"{name}",
+            serial=inverter_sn,
+            name=f"{inverter_sn}_{name}",
+            friendly_name=f"{name}{inverter_string}",
             value=mpptPv_sum,
             unit=self.__get_unit(key),
             description="Solarertrag aller Strings",
