@@ -198,7 +198,7 @@ class Ecoflow:
         
         # get sensors from response['data']
 
-        _LOGGER.debug(f"sensors_init__{sensors}")
+        # _LOGGER.debug(f"sensors_init__{sensors}")
         
         sensors = self.__get_sensors_data(response)
 
