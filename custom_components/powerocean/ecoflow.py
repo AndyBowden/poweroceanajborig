@@ -191,8 +191,8 @@ class Ecoflow:
         serials = self._get_serial_numbers(response)
 
         _LOGGER.debug(f"serial_numbers__{serials}")
-        _LOGGER.debug(f"master_serial_number__{master_sn}")
-        _LOGGER.debug(f"master_data__{master_data}")
+        _LOGGER.debug(f"master_serial_number__{self.master_sn}")
+        _LOGGER.debug(f"master_data__{self.master_data}")
 
         
         
