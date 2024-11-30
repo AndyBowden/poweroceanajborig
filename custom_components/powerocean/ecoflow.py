@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB5."""
+"""ecoflow.py: API for PowerOcean integration   AJB6."""
 
 import requests
 import base64
@@ -256,20 +256,8 @@ class Ecoflow:
         report = "JTS1_EMS_CHANGE_REPORT"
         d = response["data"]["quota"][report]
 
-        sens_select = [
-            "bpTotalChgEnergy",
-            "bpTotalDsgEnergy",
-            "bpSoc",
-            "bpOnlineSum",  # number of batteries
-            "emsCtrlLedBright",
-        ]
-
-        # add mppt Warning/Fault Codes
-        keys = d.keys()
-
 
         
-        _LOGGER.debug(f"serial_d_keys___{keys}")
         p = response["data"]["parallel"]
         keys_2 = p.keys()
         _LOGGER.debug(f"serial_p_keys2__{keys_2}")
@@ -277,9 +265,6 @@ class Ecoflow:
 
 
         
-        r = re.compile("mppt.*Code")
-        wfc = list(filter(r.match, keys))  # warning/fault code keys
-        sens_select += wfc
 
         for key in p.keys():
             pp = response["data"]["parallel"][key]
@@ -288,7 +273,7 @@ class Ecoflow:
         
         
 
-        return keys_3
+        return keys_2
 
 
 
