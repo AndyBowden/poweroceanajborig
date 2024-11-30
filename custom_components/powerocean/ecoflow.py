@@ -197,14 +197,24 @@ class Ecoflow:
         
         
         # get sensors from response['data']
+
+        _LOGGER.debug(f"sensors_init__{sensors}")
+        
         sensors = self.__get_sensors_data(response)
+
+        _LOGGER.debug(f"sensors_data__{sensors}")
 
         # get sensors from 'JTS1_ENERGY_STREAM_REPORT'
         # sensors = self.__get_sensors_energy_stream(response, sensors)  # is currently not in use
 
         # get sensors from 'JTS1_EMS_CHANGE_REPORT'
         # siehe parameter_selected.json    #  get bpSoc from ems_change
-        sensors = self.__get_sensors_ems_change(response, sensors)
+
+        _LOGGER.debug(f"sensors_in__{sensors}")
+        
+        sensors = self.__get_sensors_ems_change(self_master_data, self.master_sn, sensors)
+
+        _LOGGER.debug(f"sensors_back__{sensors}")
 
         # get info from batteries  => JTS1_BP_STA_REPORT
         sensors = self.__get_sensors_battery(response, sensors)
@@ -289,9 +299,11 @@ class Ecoflow:
 
 
     
-    def __get_sensors_ems_change(self, response, sensors):
+    def __get_sensors_ems_change(self, inverter_data, inverter_sn, sensors):
         report = "JTS1_EMS_CHANGE_REPORT"
-        d = response["data"]["quota"][report]
+        d = inverter_data[report]
+        _LOGGER.debug(f"report_subset__{d}")
+        
 
         sens_select = [
             "bpTotalChgEnergy",
@@ -313,12 +325,12 @@ class Ecoflow:
         for key, value in d.items():
             if key in sens_select:  # use only sensors in sens_select
                 # default uid, unit and descript
-                unique_id = f"{self.sn}_{report}_{key}"
+                unique_id = f"{inverter_sn}_{report}_{key}"
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
-                    serial=self.sn,
-                    name=f"{self.sn}_{key}",
+                    serial=inverter_sn,
+                    name=f"{inverter_sn}_{key}",
                     friendly_name=key,
                     value=value,
                     unit=self.__get_unit(key),
