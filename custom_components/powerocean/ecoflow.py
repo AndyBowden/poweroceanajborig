@@ -216,7 +216,7 @@ class Ecoflow:
         inverter_data = self.master_data
         inverter_sn = self.master_sn
         
-        sensors = self.__get_sensors_ems_change(inverter_data, inverter_sn, sensors)
+        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, sensors)
 
         _LOGGER.debug(f"sensors_back__{sensors}")
 
@@ -309,7 +309,7 @@ class Ecoflow:
 
 
     
-    def __get_sensors_ems_change(self, inverter_data, inverter_sn, sensors):
+    def _get_sensors_ems_change(self, inverter_data, inverter_sn, sensors):
         report = "JTS1_EMS_CHANGE_REPORT"
         d = inverter_data[report]
         _LOGGER.debug(f"report_subset__{d}")
