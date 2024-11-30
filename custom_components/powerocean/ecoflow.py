@@ -258,7 +258,6 @@ class Ecoflow:
         
     def _get_serial_numbers(self, response):
 
-        d = response["data"]["quota"][report]
 
 
         
