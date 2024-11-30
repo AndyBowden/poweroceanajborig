@@ -223,7 +223,7 @@ class Ecoflow:
         inverter_data = self.slave_data
         inverter_sn = self.slave_sn
         
-        sensors = self.__get_sensors_ems_change(inverter_data, inverter_sn, sensors)
+        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, sensors)
 
         _LOGGER.debug(f"sensors_back2__{sensors}")
 
