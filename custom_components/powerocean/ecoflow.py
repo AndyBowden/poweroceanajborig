@@ -212,7 +212,7 @@ class Ecoflow:
 
         _LOGGER.debug(f"sensors_in__{sensors}")
         
-        sensors = self.__get_sensors_ems_change(self_master_data, self.master_sn, sensors)
+        sensors = self.__get_sensors_ems_change(self.master_data, self.master_sn, sensors)
 
         _LOGGER.debug(f"sensors_back__{sensors}")
 
