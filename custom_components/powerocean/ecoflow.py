@@ -189,6 +189,10 @@ class Ecoflow:
     def _get_sensors(self, response):
         # get master and slave serial numbers from from response['data']
         serials = self._get_serial_numbers(response)
+
+        _LOGGER.debug(f"serial_numbers__{serials}")
+        _LOGGER.debug(f"serial_number1__{serials[1]}")
+
         
         # get sensors from response['data']
         sensors = self.__get_sensors_data(response)
@@ -253,7 +257,7 @@ class Ecoflow:
         return sensors
         
     def _get_serial_numbers(self, response):
-        report = "JTS1_EMS_CHANGE_REPORT"
+
         d = response["data"]["quota"][report]
 
 
