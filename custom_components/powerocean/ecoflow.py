@@ -211,10 +211,21 @@ class Ecoflow:
         # siehe parameter_selected.json    #  get bpSoc from ems_change
 
         _LOGGER.debug(f"sensors_in__{sensors}")
+
         
-        sensors = self.__get_sensors_ems_change(self.master_data, self.master_sn, sensors)
+        inverter_data = self.master_data
+        inverter_sn = self.master_sn
+        
+        sensors = self.__get_sensors_ems_change(inverter_data, inverter_sn, sensors)
 
         _LOGGER.debug(f"sensors_back__{sensors}")
+
+        inverter_data = self.slave_data
+        inverter_sn = self.slave_sn
+        
+        sensors = self.__get_sensors_ems_change(inverter_data, inverter_sn, sensors)
+
+        _LOGGER.debug(f"sensors_back2__{sensors}")
 
         # get info from batteries  => JTS1_BP_STA_REPORT
         sensors = self.__get_sensors_battery(response, sensors)
@@ -295,7 +306,6 @@ class Ecoflow:
         
 
         return keys_2
-
 
 
     
