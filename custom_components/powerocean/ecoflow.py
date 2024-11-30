@@ -216,22 +216,26 @@ class Ecoflow:
         inverter_data = self.master_data
         inverter_sn = self.master_sn
         
-        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, sensors)
+        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_master", sensors)
+        sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
+        sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
 
         _LOGGER.debug(f"sensors_back__{sensors}")
 
         inverter_data = self.slave_data
         inverter_sn = self.slave_sn
         
-        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, sensors)
-
+        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_slave", sensors)
+        sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_slave", sensors)
+        sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_slave", sensors)
+        
         _LOGGER.debug(f"sensors_back2__{sensors}")
 
         # get info from batteries  => JTS1_BP_STA_REPORT
-        sensors = self.__get_sensors_battery(response, sensors)
+       
 
         # get info from PV strings  => JTS1_EMS_HEARTBEAT
-        sensors = self.__get_sensors_ems_heartbeat(response, sensors)
+
 
         return sensors
 
@@ -280,18 +284,11 @@ class Ecoflow:
         return sensors
         
     def _get_serial_numbers(self, response):
-
-
-
-        
+      
         p = response["data"]["parallel"]
         keys_2 = p.keys()
         _LOGGER.debug(f"serial_p_keys2__{keys_2}")
-        
-
-
-        
-
+    
         for key in p.keys():
             pp = response["data"]["parallel"][key]
             keys_3 = pp.keys()
@@ -303,13 +300,11 @@ class Ecoflow:
         self.master_data = response["data"]["parallel"][self.master_sn]
         self.slave_data = response["data"]["parallel"][self.slave_sn]
         
-        
-
         return keys_2
 
 
     
-    def _get_sensors_ems_change(self, inverter_data, inverter_sn, sensors):
+    def _get_sensors_ems_change(self, inverter_data, inverter_sn, inverter_string, sensors):
         report = "JTS1_EMS_CHANGE_REPORT"
         d = inverter_data[report]
         _LOGGER.debug(f"report_subset__{d}")
@@ -341,7 +336,7 @@ class Ecoflow:
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
                     name=f"{inverter_sn}_{key}",
-                    friendly_name=key,
+                    friendly_name=key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
@@ -381,9 +376,9 @@ class Ecoflow:
     #
     #     return sensors
 
-    def __get_sensors_ems_change(self, response, sensors):
+    def _get_sensors_ems_change(self, inverter_data, inverter_sn, inverter_string, sensors):
         report = "JTS1_EMS_CHANGE_REPORT"
-        d = response["data"]["quota"][report]
+        d = inverter_data[report]
 
         sens_select = [
             "bpTotalChgEnergy",
@@ -424,9 +419,9 @@ class Ecoflow:
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
-                    serial=self.sn,
-                    name=f"{self.sn}_{key}",
-                    friendly_name=key,
+                    serial=inverter_sn,
+                    name=f"{inverter_sn}_{key}",
+                    friendly_name = key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
@@ -436,9 +431,9 @@ class Ecoflow:
 
         return sensors
 
-    def __get_sensors_battery(self, response, sensors):
+    def _get_sensors_battery(self, inverter_data, inverter_sn, inverter_string, sensors):
         report = "JTS1_BP_STA_REPORT"
-        d = response["data"]["quota"][report]
+        d = inverter_data[report]
         keys = list(d.keys())
 
         # loop over N batteries:
@@ -470,8 +465,9 @@ class Ecoflow:
                     data[unique_id] = PowerOceanEndPoint(
                         internal_unique_id=unique_id,
                         serial=self.sn,
-                        name=f"{self.sn}_{name + key}",
-                        friendly_name=name + key,
+                    name=f"{inverter_sn}_{key}",
+                    friendly_name=key + inverter_string,
+
                         value=value,
                         unit=self.__get_unit(key),
                         description=description_tmp,
@@ -498,9 +494,9 @@ class Ecoflow:
 
         return sensors
 
-    def __get_sensors_ems_heartbeat(self, response, sensors):
+    def _get_sensors_ems_heartbeat(self, inverter_data, inverter_sn, inverter_string, sensors):
         report = "JTS1_EMS_HEARTBEAT"
-        d = response["data"]["quota"][report]
+        d = inverter_data[report]
         # sens_select = d.keys()  # 68 Felder
         sens_select = [
             "bpRemainWatth",
@@ -518,9 +514,9 @@ class Ecoflow:
                 description_tmp = self.__get_description(key)
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
-                    serial=self.sn,
-                    name=f"{self.sn}_{key}",
-                    friendly_name=key,
+                    serial=inverter_sn,
+                    name=f"{inverter_sn}_{key}",
+                    friendly_name=key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
                     description=description_tmp,
@@ -537,8 +533,8 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=self.sn,
-                    name=f"{self.sn}_{name}",
-                    friendly_name=f"{name}",
+                    name=f"{inverter_sn}_{name}",
+                    friendly_name=f"{name}{inverter_string}",
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
@@ -563,8 +559,8 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=self.sn,
-                    name=f"{self.sn}_{mpptpv}_{key}",
-                    friendly_name=f"{mpptpv}_{key}",
+                    name=f"{inverter_sn}_{mpptpv}_{key}",
+                    friendly_name=f"{mpptpv}_{key}{inverter_string}",
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
