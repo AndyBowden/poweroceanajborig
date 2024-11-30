@@ -275,6 +275,12 @@ class Ecoflow:
             pp = response["data"]["parallel"][key]
             keys_3 = pp.keys()
             _LOGGER.debug(f"serial_pp_keys___{keys_3}")
+
+        self.slave_sn = next(iter(keys_2))
+        self.master_sn = next(reversed(keys_2))
+
+        self.master_data = response["data"]["parallel"][self.master_sn]
+        self.slave_data = response["data"]["parallel"][self.slave_sn]
         
         
 
@@ -297,25 +303,10 @@ class Ecoflow:
 
         # add mppt Warning/Fault Codes
         keys = d.keys()
-
-
-        
-        _LOGGER.debug(f"d_keys___{keys}")
-        p = response["data"]["parallel"]
-        keys_2 = p.keys()
-        _LOGGER.debug(f"p_keys2__{keys_2}")
-        
-
-
         
         r = re.compile("mppt.*Code")
         wfc = list(filter(r.match, keys))  # warning/fault code keys
         sens_select += wfc
-
-        for key in p.keys():
-            pp = response["data"]["parallel"][key]
-            keys_3 = pp.keys()
-            _LOGGER.debug(f"pp_keys___{keys_3}")
         
         
         data = {}
