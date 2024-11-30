@@ -443,14 +443,14 @@ class Ecoflow:
             for key, value in d_bat.items():
                 if key in bat_sens_select:
                     # default uid, unit and descript
-                    unique_id = f"{self.sn}_{report}_{bat}_{key}"
+                    unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
                     description_tmp = f"{name}" + self.__get_description(key)
                     special_icon = None
                     if key == "bpAmp":
                         special_icon = "mdi:current-dc"
                     data[unique_id] = PowerOceanEndPoint(
                         internal_unique_id=unique_id,
-                        serial=self.sn,
+                        serial=inverter_sn,
                     name=f"{inverter_sn}_{key}",
                     friendly_name=key + inverter_string,
 
@@ -463,12 +463,12 @@ class Ecoflow:
             key = "bpTemp"
             temp = d_bat[key]
             value = sum(temp) / len(temp)
-            unique_id = f"{self.sn}_{report}_{bat}_{key}"
+            unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
             description_tmp = f"{name}" + self.__get_description(key)
             data[unique_id] = PowerOceanEndPoint(
                 internal_unique_id=unique_id,
-                serial=self.sn,
-                name=f"{self.sn}_{name + key}",
+                serial=inverter_sn,
+                name=f"{inverter_sn}_{name + key}",
                 friendly_name=name + key,
                 value=value,
                 unit=self.__get_unit(key),
@@ -496,7 +496,7 @@ class Ecoflow:
         for key, value in d.items():
             if key in sens_select:
                 # default uid, unit and descript
-                unique_id = f"{self.sn}_{report}_{key}"
+                unique_id = f"{inverter_sn}_{report}_{key}{inverter_string}"
                 description_tmp = self.__get_description(key)
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
@@ -514,12 +514,12 @@ class Ecoflow:
         for i, phase in enumerate(phases):
             for key, value in d[phase].items():
                 name = phase + "_" + key + inverter_string
-                unique_id = f"{self.sn}_{report}_{name}"
+                unique_id = f"{inverter_sn}_{report}_{name}{inverter_string}"
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{name}",
+                    name=f"{inverter_sn}_{name}{inverter_string}",
                     friendly_name=f"{name}{inverter_string}",
                     value=value,
                     unit=self.__get_unit(key),
@@ -535,7 +535,7 @@ class Ecoflow:
         mpptPv_sum = 0.0
         for i, mpptpv in enumerate(mpptpvs):
             for key, value in d["mpptHeartBeat"][0]["mpptPv"][i].items():
-                unique_id = f"{self.sn}_{report}_mpptHeartBeat_{mpptpv}_{key}"
+                unique_id = f"{inverter_sn}_{report}_mpptHeartBeat_{mpptpv}_{key}"
                 special_icon = None
                 if key.endswith("amp"):
                     special_icon = "mdi:current-dc"
@@ -545,7 +545,7 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{mpptpv}_{key}",
+                    name=f"{inverter_sn}_{mpptpv}_{key}{inverter_string}",
                     friendly_name=f"{mpptpv}_{key}{inverter_string}",
                     value=value,
                     unit=self.__get_unit(key),
@@ -558,12 +558,12 @@ class Ecoflow:
 
         # create total power sensor of all strings
         name = "mpptPv_pwrTotal"
-        unique_id = f"{self.sn}_{report}_mpptHeartBeat_{name}"
+        unique_id = f"{inverter_sn}_{report}_mpptHeartBeat_{name}"
 
         data[unique_id] = PowerOceanEndPoint(
             internal_unique_id=unique_id,
             serial=inverter_sn,
-            name=f"{inverter_sn}_{name}",
+            name=f"{inverter_sn}_{name}{inverter_string}",
             friendly_name=f"{name}{inverter_string}",
             value=mpptPv_sum,
             unit=self.__get_unit(key),
