@@ -381,9 +381,14 @@ class Ecoflow:
         report = "JTS1_BP_STA_REPORT"
         d = inverter_data[report]
         keys = list(d.keys())
-
+        
+       _LOGGER.debug(f"batt_keys__{keys}")
+ 
         # loop over N batteries:
         batts = [s for s in keys if len(s) > 12]
+
+       _LOGGER.debug(f"batts__{batts}")
+ 
         bat_sens_select = [
             "bpPwr",
             "bpSoc",
