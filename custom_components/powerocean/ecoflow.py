@@ -402,8 +402,11 @@ class Ecoflow:
 
         data = {}
         prefix = "bpack"
+        _LOGGER.debug(f"batts_no__{enumerate(batts)}")
+
         for ibat, bat in enumerate(batts):
             name = prefix + "%i_" % (ibat + 1)
+            _LOGGER.debug(f"batts_name__{name}")
             d_bat = json_loads(d[bat])
             for key, value in d_bat.items():
                 if key in bat_sens_select:
