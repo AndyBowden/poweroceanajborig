@@ -408,7 +408,10 @@ class Ecoflow:
             name = prefix + "%i_" % (ibat + 1)
             _LOGGER.debug(f"batts_name__{name}")
             d_bat = json_loads(d[bat])
+            _LOGGER.debug(f"batts_dbat__{d_bat}")
+
             for key, value in d_bat.items():
+                _LOGGER.debug(f"batts_dbat_items__{d_bat.items}")
                 if key in bat_sens_select:
                     # default uid, unit and descript
                     unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
@@ -419,8 +422,8 @@ class Ecoflow:
                     data[unique_id] = PowerOceanEndPoint(
                         internal_unique_id=unique_id,
                         serial=inverter_sn,
-                    name=f"{inverter_sn}_{key}",
-                    friendly_name=key + inverter_string,
+                        name=f"{inverter_sn}_{key}",
+                        friendly_name=key + inverter_string,
 
                         value=value,
                         unit=self.__get_unit(key),
@@ -433,6 +436,7 @@ class Ecoflow:
             value = sum(temp) / len(temp)
             unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
             description_tmp = f"{name}" + self.__get_description(key)
+            _LOGGER.debug(f"batts_description_tmp__{description_tmp}")
             data[unique_id] = PowerOceanEndPoint(
                 internal_unique_id=unique_id,
                 serial=inverter_sn,
