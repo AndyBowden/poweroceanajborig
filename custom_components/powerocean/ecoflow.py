@@ -286,6 +286,8 @@ class Ecoflow:
     def _get_serial_numbers(self, response):
       
         p = response["data"]["parallel"]
+        _LOGGER.debug(f"parralel_present__{len(p)}")
+
         keys_2 = p.keys()
         _LOGGER.debug(f"serial_p_keys2__{keys_2}")
     
@@ -382,6 +384,7 @@ class Ecoflow:
         d = inverter_data[report]
         keys = list(d.keys())
         
+        _LOGGER.debug(f"inverter__{inverter_sn}")
         _LOGGER.debug(f"batt_keys__{keys}")
  
         # loop over N batteries:
@@ -406,6 +409,7 @@ class Ecoflow:
 
         for ibat, bat in enumerate(batts):
             name = prefix + "%i_" % (ibat + 1)
+            _LOGGER.debug(f"batty__{ibat}{bat}")
             _LOGGER.debug(f"batts_name__{name}")
             d_bat = json_loads(d[bat])
             _LOGGER.debug(f"batts_dbat__{d_bat}")
