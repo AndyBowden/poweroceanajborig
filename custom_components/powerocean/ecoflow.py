@@ -427,7 +427,7 @@ class Ecoflow:
                         internal_unique_id=unique_id,
                         serial=inverter_sn,
                         name=f"{inverter_sn}_{key}",
-                        friendly_name=key + inverter_string,
+                        friendly_name= inverter_string + name + key,
 
                         value=value,
                         unit=self.__get_unit(key),
@@ -445,7 +445,7 @@ class Ecoflow:
                 internal_unique_id=unique_id,
                 serial=inverter_sn,
                 name=f"{inverter_sn}_{name + key}",
-                friendly_name=name + key,
+                friendly_name = inverter_string + name + key,
                 value=value,
                 unit=self.__get_unit(key),
                 description=description_tmp,
