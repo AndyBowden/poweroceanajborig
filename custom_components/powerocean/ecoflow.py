@@ -1,4 +1,6 @@
-"""ecoflow.py: API for PowerOcean integration   AJB6."""
+"""ecoflow.py: API for PowerOcean integration   AJB7."""
+""" closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
+""" AndyBowden Dec 2024 """
 
 import requests
 import base64
@@ -190,54 +192,61 @@ class Ecoflow:
         # get master and slave serial numbers from from response['data']
         serials = self._get_serial_numbers(response)
 
-        _LOGGER.debug(f"serial_numbers__{serials}")
-        _LOGGER.debug(f"master_serial_number__{self.master_sn}")
-        _LOGGER.debug(f"master_data__{self.master_data}")
+        if serials = 0 :
+        elif serials = 2:
+            
+
+            _LOGGER.debug(f"serial_numbers__{serials}")
+            _LOGGER.debug(f"master_serial_number__{self.master_sn}")
+            _LOGGER.debug(f"master_data__{self.master_data}")
 
         
         
-        # get sensors from response['data']
+            # get sensors from response['data']
 
-        # _LOGGER.debug(f"sensors_init__{sensors}")
+            # _LOGGER.debug(f"sensors_init__{sensors}")
         
-        sensors = self.__get_sensors_data(response)
+            sensors = self.__get_sensors_data(response)
 
-        _LOGGER.debug(f"sensors_data__{sensors}")
+            _LOGGER.debug(f"sensors_data__{sensors}")
 
-        # get sensors from 'JTS1_ENERGY_STREAM_REPORT'
-        # sensors = self.__get_sensors_energy_stream(response, sensors)  # is currently not in use
+            # get sensors from 'JTS1_ENERGY_STREAM_REPORT'
+            # sensors = self.__get_sensors_energy_stream(response, sensors)  # is currently not in use
 
-        # get sensors from 'JTS1_EMS_CHANGE_REPORT'
-        # siehe parameter_selected.json    #  get bpSoc from ems_change
+            # get sensors from 'JTS1_EMS_CHANGE_REPORT'
+            # siehe parameter_selected.json    #  get bpSoc from ems_change
 
-        _LOGGER.debug(f"sensors_in__{sensors}")
+            _LOGGER.debug(f"sensors_in__{sensors}")
 
         
-        inverter_data = self.master_data
-        inverter_sn = self.master_sn
+            inverter_data = self.master_data
+            inverter_sn = self.master_sn
         
-        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_master", sensors)
-        sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
-        sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
+            sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_master", sensors)
+            sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
+            sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
 
         _LOGGER.debug(f"sensors_back__{sensors}")
 
-        inverter_data = self.slave_data
-        inverter_sn = self.slave_sn
-        
-        sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_slave", sensors)
-        sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_slave", sensors)
-        sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_slave", sensors)
-        
-        _LOGGER.debug(f"sensors_back2__{sensors}")
-
-        # get info from batteries  => JTS1_BP_STA_REPORT
-       
-
-        # get info from PV strings  => JTS1_EMS_HEARTBEAT
-
-
-        return sensors
+            inverter_data = self.slave_data
+            inverter_sn = self.slave_sn
+            
+            sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_slave", sensors)
+            sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_slave", sensors)
+            sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_slave", sensors)
+            
+            _LOGGER.debug(f"sensors_back2__{sensors}")
+    
+            # get info from batteries  => JTS1_BP_STA_REPORT
+           
+    
+            # get info from PV strings  => JTS1_EMS_HEARTBEAT
+    
+    
+            return sensors
+        else
+            _LOGGER.debug(f"more than two inverters aborting")
+        return
 
     def __get_sensors_data(self, response):
         d = response["data"].copy()
@@ -288,6 +297,10 @@ class Ecoflow:
         p = response["data"]["parallel"]
         _LOGGER.debug(f"parralel_present__{len(p)}")
 
+        if len(p) = 0 :
+            return 0
+        
+
         keys_2 = p.keys()
         _LOGGER.debug(f"serial_p_keys2__{keys_2}")
     
@@ -302,7 +315,7 @@ class Ecoflow:
         self.master_data = response["data"]["parallel"][self.master_sn]
         self.slave_data = response["data"]["parallel"][self.slave_sn]
         
-        return keys_2
+        return len(p)
 
 
     
@@ -405,7 +418,7 @@ class Ecoflow:
         ]
 
         data = {}
-        prefix = "bpack"
+        prefix = "_bpack"
         _LOGGER.debug(f"batts_no__{enumerate(batts)}")
 
         for ibat, bat in enumerate(batts):
