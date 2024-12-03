@@ -192,8 +192,8 @@ class Ecoflow:
         # get master and slave serial numbers from from response['data']
         serials = self._get_serial_numbers(response)
 
-        if serials = 0 :
-        elif serials = 2:
+        if serials == 0 :
+        elif serials == 2:
             
 
             _LOGGER.debug(f"serial_numbers__{serials}")
