@@ -250,7 +250,7 @@ class Ecoflow:
             return sensors
         else:
             _LOGGER.debug(f"more than two inverters aborting")
-            return
+            
         return
 
     def __get_sensors_data(self, response):
