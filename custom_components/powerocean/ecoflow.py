@@ -251,7 +251,6 @@ class Ecoflow:
         else:
             _LOGGER.debug(f"more than two inverters aborting")
             
-        return
 
     def __get_sensors_data(self, response):
         d = response["data"].copy()
