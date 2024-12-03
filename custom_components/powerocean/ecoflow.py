@@ -248,7 +248,7 @@ class Ecoflow:
     
     
             return sensors
-        else
+        else:
             _LOGGER.debug(f"more than two inverters aborting")
             return
         return
