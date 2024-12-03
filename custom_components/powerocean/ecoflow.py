@@ -226,7 +226,7 @@ class Ecoflow:
             sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
             sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
 
-        _LOGGER.debug(f"sensors_back__{sensors}")
+            _LOGGER.debug(f"sensors_back__{sensors}")
 
             inverter_data = self.slave_data
             inverter_sn = self.slave_sn
