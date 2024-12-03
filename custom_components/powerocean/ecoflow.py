@@ -401,6 +401,7 @@ class Ecoflow:
             "bpCycles",
             "bpSysState",
             "bpRemainWatth",
+            "bpTemp",
         ]
 
         data = {}
@@ -423,6 +424,11 @@ class Ecoflow:
                     special_icon = None
                     if key == "bpAmp":
                         special_icon = "mdi:current-dc"
+                    if key == "bpTemp":
+                        temp = d_bat[key]
+                        value = sum(temp) / len(temp)
+                        _LOGGER.debug(f"batts_temps__{temp}")
+                        _LOGGER.debug(f"batts_avg_temp__{value}")
                     data[unique_id] = PowerOceanEndPoint(
                         internal_unique_id=unique_id,
                         serial=inverter_sn,
@@ -435,22 +441,22 @@ class Ecoflow:
                         icon=special_icon,
                     )
             # compute mean temperature of cells
-            key = "bpTemp"
-            temp = d_bat[key]
-            value = sum(temp) / len(temp)
-            unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
-            description_tmp = f"{name}" + self.__get_description(key)
-            _LOGGER.debug(f"batts_description_tmp__{description_tmp}")
-            data[unique_id] = PowerOceanEndPoint(
-                internal_unique_id=unique_id,
-                serial=inverter_sn,
-                name=f"{inverter_sn}_{name + key}",
-                friendly_name = inverter_string + name + key,
-                value=value,
-                unit=self.__get_unit(key),
-                description=description_tmp,
-                icon=None,
-            )
+     #       key = "bpTemp"
+     #       temp = d_bat[key]
+     #       value = sum(temp) / len(temp)
+     #       unique_id = f"{inverter_sn}_{report}_{bat}_{key}"
+     #       description_tmp = f"{name}" + self.__get_description(key)
+     #       _LOGGER.debug(f"batts_description_tmp__{description_tmp}")
+     #       data[unique_id] = PowerOceanEndPoint(
+     #           internal_unique_id=unique_id,
+     #           serial=inverter_sn,
+     #           name=f"{inverter_sn}_{name + key}",
+     #           friendly_name = inverter_string + name + key,
+     #           value=value,
+     #           unit=self.__get_unit(key),
+     #           description=description_tmp,
+     #           icon=None,
+     #       )
 
         dict.update(sensors, data)
 
