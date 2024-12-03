@@ -189,10 +189,14 @@ class Ecoflow:
         return description
 
     def _get_sensors(self, response):
-        # get master and slave serial numbers from from response['data']
+        # check if dual master and slave inverter system
+        # and if so get serial numbers from from response['data']
+        
         serials = self._get_serial_numbers(response)
 
         if serials == 0 :
+            _LOGGER.debug(f"single inverter system")
+            return
         elif serials == 2:
             
 
@@ -246,6 +250,7 @@ class Ecoflow:
             return sensors
         else
             _LOGGER.debug(f"more than two inverters aborting")
+            return
         return
 
     def __get_sensors_data(self, response):
