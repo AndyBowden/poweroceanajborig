@@ -301,7 +301,7 @@ class Ecoflow:
         p = response["data"]["parallel"]
         _LOGGER.debug(f"parralel_present__{len(p)}")
 
-        if len(p) = 0 :
+        if len(p) == 0 :
             return 0
         
 
