@@ -509,8 +509,8 @@ class Ecoflow:
                     description=description_tmp,
                     icon=None,
                 )
-                _LOGGER.debug(f"heartbeat2__{name}")
-                _LOGGER.debug(f"heartbeat3__{friendly_name}")
+                _LOGGER.debug(f"heartbeat2__{inverter_sn}_{key}_{inverter_string}")
+                _LOGGER.debug(f"heartbeat3__{key}_{inverter_string}")
 
 
         # special for phases
@@ -530,8 +530,8 @@ class Ecoflow:
                     description=self.__get_description(key),
                     icon=None,
                 )
-                _LOGGER.debug(f"heartbeat4__{name}")
-                _LOGGER.debug(f"heartbeat5__{friendly_name}")
+                _LOGGER.debug(f"heartbeat4__{inverter_sn}_{name}")
+                _LOGGER.debug(f"heartbeat5__{name}")
 
 
         # special for mpptPv
