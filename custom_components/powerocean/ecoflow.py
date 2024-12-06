@@ -491,6 +491,8 @@ class Ecoflow:
             "pcsMeterPower",
 
         ]
+        _LOGGER.debug(f"heartbeat1__{inverter_string}")
+
         data = {}
         for key, value in d.items():
             if key in sens_select:
@@ -507,6 +509,9 @@ class Ecoflow:
                     description=description_tmp,
                     icon=None,
                 )
+                _LOGGER.debug(f"heartbeat2__{name}")
+                _LOGGER.debug(f"heartbeat3__{friendly_name}")
+
 
         # special for phases
         phases = ["pcsAPhase", "pcsBPhase", "pcsCPhase"]
@@ -518,13 +523,16 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{name}_{inverter_string}",
-                    friendly_name=f"{name}_{inverter_string}",
+                    name=f"{inverter_sn}_{name}",
+                    friendly_name=f"{name}",
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
                     icon=None,
                 )
+                _LOGGER.debug(f"heartbeat4__{name}")
+                _LOGGER.debug(f"heartbeat5__{friendly_name}")
+
 
         # special for mpptPv
         n_strings = len(d["mpptHeartBeat"][0]["mpptPv"])  # TODO: auch als Sensor?
