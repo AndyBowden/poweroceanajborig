@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB9."""
+"""ecoflow.py: API for PowerOcean integration   AJB10."""
 """ closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
 """ AndyBowden Dec 2024 """
 
