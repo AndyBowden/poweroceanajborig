@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB8."""
+"""ecoflow.py: API for PowerOcean integration   AJB9."""
 """ closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
 """ AndyBowden Dec 2024 """
 
@@ -212,7 +212,7 @@ class Ecoflow:
         
             sensors = self.__get_sensors_data(response)
 
-            _LOGGER.debug(f"sensors_data__{sensors}")
+            _LOGGER.debug(f"sensors_1__{sensors}")
 
             # get sensors from 'JTS1_ENERGY_STREAM_REPORT'
             # sensors = self.__get_sensors_energy_stream(response, sensors)  # is currently not in use
@@ -220,7 +220,7 @@ class Ecoflow:
             # get sensors from 'JTS1_EMS_CHANGE_REPORT'
             # siehe parameter_selected.json    #  get bpSoc from ems_change
 
-            _LOGGER.debug(f"sensors_in__{sensors}")
+            _LOGGER.debug(f"sensors_2__{sensors}")
 
         
             inverter_data = self.master_data
@@ -230,7 +230,7 @@ class Ecoflow:
             sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
             sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
 
-            _LOGGER.debug(f"sensors_back__{sensors}")
+            _LOGGER.debug(f"sensors_3__{sensors}")
 
             inverter_data = self.slave_data
             inverter_sn = self.slave_sn
@@ -239,7 +239,7 @@ class Ecoflow:
             sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_slave", sensors)
             sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_slave", sensors)
             
-            _LOGGER.debug(f"sensors_back2__{sensors}")
+            _LOGGER.debug(f"sensors_4__{sensors}")
     
             # get info from batteries  => JTS1_BP_STA_REPORT
            
@@ -299,7 +299,7 @@ class Ecoflow:
     def _get_serial_numbers(self, response):
       
         p = response["data"]["parallel"]
-        _LOGGER.debug(f"parralel_present__{len(p)}")
+        _LOGGER.debug(f"parallel_present__{len(p)}")
 
         if len(p) == 0 :
             return 0
