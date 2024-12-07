@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB10."""
+"""ecoflow.py: API for PowerOcean integration   AJB12."""
 """ closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
 """ AndyBowden Dec 2024 """
 
@@ -227,22 +227,24 @@ class Ecoflow:
             inverter_sn = self.master_sn
         
             sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_master", sensors)
+            _LOGGER.debug(f"sensors_3__{sensors}")
             sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_master", sensors)
+            _LOGGER.debug(f"sensors_4__{sensors}")
             sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_master", sensors)
 
-            _LOGGER.debug(f"sensors_3__{sensors}")
+            _LOGGER.debug(f"sensors_5__{sensors}")
 
             inverter_data = self.slave_data
             inverter_sn = self.slave_sn
             
             sensors = self._get_sensors_ems_change(inverter_data, inverter_sn, "_slave", sensors)
 
-            _LOGGER.debug(f"sensors_4__{sensors}")
+            _LOGGER.debug(f"sensors_6__{sensors}")
             sensors = self._get_sensors_battery(inverter_data, inverter_sn, "_slave", sensors)
-            _LOGGER.debug(f"sensors_5__{sensors}")
+            _LOGGER.debug(f"sensors_7__{sensors}")
             sensors = self._get_sensors_ems_heartbeat(inverter_data, inverter_sn, "_slave", sensors)
             
-            _LOGGER.debug(f"sensors_6__{sensors}")
+            _LOGGER.debug(f"sensors_8__{sensors}")
     
             # get info from batteries  => JTS1_BP_STA_REPORT
            
