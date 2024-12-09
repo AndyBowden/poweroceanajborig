@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB13."""
+"""ecoflow.py: API for PowerOcean integration   AJB14."""
 """ closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
 """ AndyBowden Dec 2024 """
 
@@ -455,7 +455,7 @@ class Ecoflow:
                         internal_unique_id=unique_id,
                         serial=inverter_sn,
                         name=f"{inverter_sn}_{key}",
-                        friendly_name= inverter_string + name + key,
+                        friendly_name= key + name +  inverter_string,
 
                         value=value,
                         unit=self.__get_unit(key),
