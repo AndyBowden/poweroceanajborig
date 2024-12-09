@@ -1,4 +1,4 @@
-"""ecoflow.py: API for PowerOcean integration   AJB12."""
+"""ecoflow.py: API for PowerOcean integration   AJB13."""
 """ closely based on code by niltrip modified to cater for dual master/slave inverter configuration  """
 """ AndyBowden Dec 2024 """
 
@@ -523,7 +523,7 @@ class Ecoflow:
         for i, phase in enumerate(phases):
             for key, value in d[phase].items():
                 name = phase + "_" + key +  "_" + inverter_string
-                unique_id = f"{inverter_sn}_{report}_{name}_{inverter_string}"
+                unique_id = f"{inverter_sn}_{report}_{name}"
 
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
