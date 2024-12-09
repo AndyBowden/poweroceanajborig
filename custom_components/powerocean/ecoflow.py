@@ -507,22 +507,22 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{key}_{inverter_string}",
-                    friendly_name= key + "_" + inverter_string,
+                    name=f"{inverter_sn}_{key}{inverter_string}",
+                    friendly_name= key + inverter_string,
                     value=value,
                     unit=self.__get_unit(key),
                     description=description_tmp,
                     icon=None,
                 )
-                _LOGGER.debug(f"heartbeat2__{inverter_sn}_{key}_{inverter_string}")
-                _LOGGER.debug(f"heartbeat3__{key}_{inverter_string}")
+                _LOGGER.debug(f"heartbeat2__{inverter_sn}_{key}{inverter_string}")
+                _LOGGER.debug(f"heartbeat3__{key}{inverter_string}")
 
 
         # special for phases
         phases = ["pcsAPhase", "pcsBPhase", "pcsCPhase"]
         for i, phase in enumerate(phases):
             for key, value in d[phase].items():
-                name = phase + "_" + key +  "_" + inverter_string
+                name = phase + "_" + key +  inverter_string
                 unique_id = f"{inverter_sn}_{report}_{name}"
 
                 data[unique_id] = PowerOceanEndPoint(
@@ -557,8 +557,8 @@ class Ecoflow:
                 data[unique_id] = PowerOceanEndPoint(
                     internal_unique_id=unique_id,
                     serial=inverter_sn,
-                    name=f"{inverter_sn}_{mpptpv}_{key}_{inverter_string}",
-                    friendly_name=f"{mpptpv}_{key}_{inverter_string}",
+                    name=f"{inverter_sn}_{mpptpv}_{key}{inverter_string}",
+                    friendly_name=f"{mpptpv}_{key}{inverter_string}",
                     value=value,
                     unit=self.__get_unit(key),
                     description=self.__get_description(key),
@@ -575,8 +575,8 @@ class Ecoflow:
         data[unique_id] = PowerOceanEndPoint(
             internal_unique_id=unique_id,
             serial=inverter_sn,
-            name=f"{inverter_sn}_{name}_{inverter_string}",
-            friendly_name=f"{name}_{inverter_string}",
+            name=f"{inverter_sn}_{name}{inverter_string}",
+            friendly_name=f"{name}{inverter_string}",
             value=mpptPv_sum,
             unit=self.__get_unit(key),
             description="Solarertrag aller Strings",
